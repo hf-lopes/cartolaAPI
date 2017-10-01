@@ -1,9 +1,10 @@
-import peewee as pw
+from playhouse import postgres_ext as pg_ext
+from connectors.postgree import PostGreConnector
 
+class Position(pg_ext.Model):
 
-class Position(pw.Model):
+    ID = pg_ext.SmallIntegerField(unique=True, primary_key=True)
+    Name = pg_ext.TextField()
+    NickName = pg_ext.TextField()
 
-    ID = pw.SmallIntegerField(unique=True, primary_key=True)
-    Name = pw.TextField()
-    NickName = pw.TextField()
 

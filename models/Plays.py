@@ -1,17 +1,19 @@
-import peewee as pw
+from playhouse import postgres_ext as pg_ext
+from connectors.postgree import PostGreConnector
 from Players import Player
 from Teams import Team
 from Matches import Match
 from Skills import Skill
 
 
-class Play(pw.Model):
+class Play(pg_ext.Model):
 
-    ID = pw.IntegerField(unique=True, primary_key=True)
-    MatchID = pw.ForeignKeyField(Match)
-    TeamID = pw.ForeignKeyField(Team)
-    PlayerID = pw.ForeignKeyField(Player)
-    Period = pw.CharField()
-    Moment = pw.DoubleField()
-    PlayType = pw.ForeignKeyField(Skill)
+    ID = pg_ext.IntegerField(unique=True, primary_key=True)
+    MatchID = pg_ext.ForeignKeyField(Match)
+    TeamID = pg_ext.ForeignKeyField(Team)
+    PlayerID = pg_ext.ForeignKeyField(Player)
+    Period = pg_ext.CharField()
+    Moment = pg_ext.DoubleField()
+    PlayType = pg_ext.ForeignKeyField(Skill)
+
 
