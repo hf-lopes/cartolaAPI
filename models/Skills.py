@@ -1,12 +1,10 @@
-from playhouse import postgres_ext as pg_ext
-from models.BaseModel import BaseModel
+from models.BaseModel import Base
 
 
-class Skill(BaseModel):
+class Skill(Base):
 
-    ID = pg_ext.IntegerField(unique=True, primary_key=True)
-    Name = pg_ext.TextField()
-    NickName = pg_ext.CharField()
-    Points = pg_ext.DoubleField()
+    name = Column(String, nullable=False)
+    nickname = Column(String, nullable = False)
+    Points = Column(Float, nullable = False)
 
 

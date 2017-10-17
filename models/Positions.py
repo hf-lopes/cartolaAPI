@@ -1,12 +1,10 @@
-from playhouse import postgres_ext as pg_ext
-from models.BaseModel import BaseModel
+from models.BaseModel import Base
 
 
-class Position(BaseModel):
+class Position(Base):
 
-    ID = pg_ext.SmallIntegerField(unique=True, primary_key=True)
-    Name = pg_ext.TextField()
-    NickName = pg_ext.TextField()
-    Year = pg_ext.IntegerField()
+    name = Column(String, nullable=False)
+    nickname = Column(String, nullable = False)
+    year = Column(Integer, nullable=False, default=2014)
 
 

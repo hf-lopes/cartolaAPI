@@ -1,25 +1,19 @@
-from playhouse import postgres_ext as pg_ext
-from models.BaseModel import BaseModel
-from models.Players import Player
-from models.Teams import Team
-from models.Matches import Match
+from models.BaseModel import Base
 
 
-class Scout(BaseModel):
+class Scout(Base):
 
-    ID = pg_ext.IntegerField(unique=True, primary_key=True)
-    PlayerID = pg_ext.ForeignKeyField(Player)
-    MatchWeek = pg_ext.IntegerField()
-    TeamID = pg_ext.ForeignKeyField(Team)
-    HasPlayed = pg_ext.BooleanField()
-    Points = pg_ext.DoubleField()
-    AveragePoints = pg_ext.DoubleField()
-    Price = pg_ext.DoubleField()
-    DeltaPrice = pg_ext.DoubleField()
-    MatchID = pg_ext.ForeignKeyField(Match)
-    HomeGame = pg_ext.BooleanField()
-    Score = pg_ext.DoubleField()
-    Plays = pg_ext.ArrayField(pg_ext.IntegerField)
-    Year = pg_ext.IntegerField()
+    player_id = Column(Integer, ForeignKey('player.id')
+    team_id = Column(Integer, ForeignKey('team.id')
+    match_id = Column(Integer, ForeignKey('match.id')
+    has_played = Column(Boolean, nullable=False)
+    points = Column(Float, nullable = False)
+    average_points = Column(Float, nullable = False)
+    price = Column(Float, nullable = False)
+    delta_price = Column(Float, nullable = False)
+    home_game = Column(Boolean, nullable=False)
+    score = Column(Float, nullable = False)
+    plays = Column(ARRAY(Integer))
+    year = Column(Integer, nullable=False, default=2014)
 
 
