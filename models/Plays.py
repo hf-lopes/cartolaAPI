@@ -1,12 +1,12 @@
 from playhouse import postgres_ext as pg_ext
-from connectors.postgree import PostGreConnector
-from Players import Player
-from Teams import Team
-from Matches import Match
-from Skills import Skill
+from models.BaseModel import BaseModel
+from models.Players import Player
+from models.Teams import Team
+from models.Matches import Match
+from models.Skills import Skill
 
 
-class Play(pg_ext.Model):
+class Play(BaseModel):
 
     ID = pg_ext.IntegerField(unique=True, primary_key=True)
     MatchID = pg_ext.ForeignKeyField(Match)
@@ -15,5 +15,6 @@ class Play(pg_ext.Model):
     Period = pg_ext.CharField()
     Moment = pg_ext.DoubleField()
     PlayType = pg_ext.ForeignKeyField(Skill)
+    Year = pg_ext.IntegerField()
 
 

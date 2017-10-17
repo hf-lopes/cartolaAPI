@@ -1,8 +1,8 @@
 from playhouse import postgres_ext as pg_ext
-from connectors.postgree import PostGreConnector
+from models.BaseModel import BaseModel
 
 
-class Skill(pg_ext.Model):
+class Skill(BaseModel):
 
     ID = pg_ext.IntegerField(unique=True, primary_key=True)
     Name = pg_ext.TextField()

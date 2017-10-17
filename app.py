@@ -1,9 +1,21 @@
 from modules.csv2python import Csv2Python
+from modules.pandas2db import Pandas2DB
+import pandas as pd
 
-atletas = Csv2Python.read_csv('db/2014/Atletas.csv')
-clubes = Csv2Python.read_csv('db/2014/Clubes.csv')
-lances = Csv2Python.read_csv('db/2014/Lances.csv')
-partidas = Csv2Python.read_csv('db/2014/Partidas.csv')
-posicoes = Csv2Python.read_csv('db/2014/Posicoes.csv')
-scouts = Csv2Python.read_csv('db/2014/Scouts.csv')
-print(list(scouts))
+
+
+atletas = Csv2Python.read_players()
+partidas = Csv2Python.read_matches()
+scouts = Csv2Python.read_scouts()
+times = Csv2Python.read_teams()
+posicoes = Csv2Python.read_positions()
+
+
+Pandas2DB().createtables()
+Pandas2DB().InsertTeam(times)
+Pandas2DB().InsertSkill()
+Pandas2DB().InsertPosition(posicoes)
+Pandas2DB().InsertPlayer(atletas)
+Pandas2DB().InsertMatch(partidas)
+Pandas2DB().InsertScout(scouts)
+
