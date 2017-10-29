@@ -20,7 +20,10 @@ class Csv2Python:
                 df.loc[:, 'Year'] = 2014
             year += 1
             df_list.append(df)
-        return pandas.concat(df_list)
+        df = pandas.concat(df_list)
+        if 'ID' in df:
+            df = df.drop_duplicates('ID', keep='last')
+        return df
 
     @staticmethod
     def read_players():

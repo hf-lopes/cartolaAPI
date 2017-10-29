@@ -1,5 +1,6 @@
 from modules.csv2python import Csv2Python
 from modules.pandas2db import Pandas2DB
+from connectors.postgree import PostGreConnector
 import pandas as pd
 
 
@@ -10,12 +11,12 @@ scouts = Csv2Python.read_scouts()
 times = Csv2Python.read_teams()
 posicoes = Csv2Python.read_positions()
 
-
-Pandas2DB().createtables()
+pdcon = Pandas2DB()
+pdcon.createtables()
 Pandas2DB().InsertTeam(times)
 Pandas2DB().InsertSkill()
 Pandas2DB().InsertPosition(posicoes)
-Pandas2DB().InsertPlayer(atletas)
+pdcon.InsertPlayer(atletas)
 Pandas2DB().InsertMatch(partidas)
 Pandas2DB().InsertScout(scouts)
 

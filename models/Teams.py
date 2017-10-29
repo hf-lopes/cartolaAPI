@@ -1,4 +1,5 @@
 from models.BaseModel import Base
+from sqlalchemy import Column, Integer, Boolean, Float, ARRAY, String, ForeignKey
 
 class Team(Base):
 

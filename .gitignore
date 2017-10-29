@@ -1,0 +1,4 @@
+*.pyc
+env_cartola/
+*/__pycache__/*
+.idea/

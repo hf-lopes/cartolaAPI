@@ -1,11 +1,12 @@
 from models.BaseModel import Base
+from sqlalchemy import Column, Integer, Boolean, Float, ARRAY, String, ForeignKey
 
 
 class Scout(Base):
 
-    player_id = Column(Integer, ForeignKey('player.id')
-    team_id = Column(Integer, ForeignKey('team.id')
-    match_id = Column(Integer, ForeignKey('match.id')
+    player_id = Column(Integer, ForeignKey('player.id'))
+    team_id = Column(Integer, ForeignKey('team.id'))
+    match_id = Column(Integer, ForeignKey('match.id'))
     has_played = Column(Boolean, nullable=False)
     points = Column(Float, nullable = False)
     average_points = Column(Float, nullable = False)
