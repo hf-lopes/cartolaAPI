@@ -1,6 +1,6 @@
 import pandas as pd
 import math
-
+import numpy
 from connectors.postgree import PostGreConnector
 from constants import abreviacao, pontuacao, descricao
 
@@ -23,6 +23,7 @@ class Pandas2DB():
 
     def InsertPlayer(self, df):
         DB_list = Pandas2DB.Df2Db_Player(df)
+        # self.db_con.InsertElement(DB_list[0])
         self.db_con.InsertList(DB_list)
 
     def InsertMatch(self, df):
@@ -35,7 +36,8 @@ class Pandas2DB():
 
     def InsertScout(self, df):
         DB_list = Pandas2DB.Df2Db_Scout(df)
-        self.db_con.InsertList(DB_list)
+        # self.db_con.InsertList(DB_list)
+        self.db_con.InsertListManual(DB_list)
 
     def InsertSkill(self):
         DB_list = Pandas2DB.Df2Db_Skill()
@@ -59,8 +61,8 @@ class Pandas2DB():
     def Df2Db_Match(df):
         DB_list = []
         for index, row in df.iterrows():
-            partida = Match(id = row['ID'], home_team_id = row['Casa'], visiting_team_id = row['Visitante'], result = row['Resultado'],
-                       home_score = row['PlacarCasa'], visiting_score= row['PlacarVisitante'],
+            partida = Match(id = row['ID'] - 179872, home_team_id = int(row['Casa']), visiting_team_id = int(row['Visitante']), result = row['Resultado'],
+                       home_score = int(row['PlacarCasa']), visiting_score= int(row['PlacarVisitante']),
                         match_week = row['Rodada'], year = row['Year'])
             DB_list.append(partida)
         return DB_list
@@ -79,15 +81,14 @@ class Pandas2DB():
         for index, row in df.iterrows():
             Play_list = []
             for sigla in abreviacao:
-                Play_list.append(row[sigla])
-            status = True if row['Participou'] == 1 else False
-            scouts = Scout(id= index, player_id= row['Atleta'], match_week= row['Rodada'],
-                      team_id= row['Clube'], has_played= status, points= row['Pontos'],
-                      average_points= row['PontosMedia'], price= row['Preco'],
-                      delta_price= row['PrecoVariacao'], match_id= row['Partida'], home_game= row['Mando'],
-                      score= row['Nota'], plays= Play_list,
-                      year= row['Year'])
-            DB_list.append(scouts)
+                Play_list.append(int(row[sigla]))
+            if not math.isnan(row['Clube']):
+                scouts = Scout(id= int(index), player_id= int(row['Atleta']),
+                          team_id= row['Clube'], has_played= bool(row['Participou']), points= float(row['Pontos']),
+                          average_points= float(row['PontosMedia']), price= float(row['Preco']),
+                          delta_price= float(row['PrecoVariacao']), plays= 1,
+                          year= int(row['Year']))
+                DB_list.append(scouts)
         return DB_list
 
     @staticmethod

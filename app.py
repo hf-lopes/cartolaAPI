@@ -4,6 +4,8 @@ from connectors.postgree import PostGreConnector
 import pandas as pd
 
 
+# pgcon = PostGreConnector()
+# pgcon.DropAll()
 
 atletas = Csv2Python.read_players()
 partidas = Csv2Python.read_matches()
@@ -13,10 +15,17 @@ posicoes = Csv2Python.read_positions()
 
 pdcon = Pandas2DB()
 pdcon.createtables()
-Pandas2DB().InsertTeam(times)
-Pandas2DB().InsertSkill()
-Pandas2DB().InsertPosition(posicoes)
-pdcon.InsertPlayer(atletas)
-Pandas2DB().InsertMatch(partidas)
+# print('Tabelas Criadas')
+# Pandas2DB().InsertTeam(times)
+# print('Times inseridos')
+# Pandas2DB().InsertSkill()
+# print('Skills inseridos')
+# Pandas2DB().InsertPosition(posicoes)
+# print('Posições inseridos')
+# Pandas2DB().InsertPlayer(atletas)
+# print('Jogadores inseridos')
+# Pandas2DB().InsertMatch(partidas)
+# print('Partidas inseridas')
 Pandas2DB().InsertScout(scouts)
+print('Scouts inseridos')
 

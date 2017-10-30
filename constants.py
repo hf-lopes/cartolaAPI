@@ -15,3 +15,28 @@ pg_user = 'hlopes'
 pg_pswd = 'lopes_146'
 pg_db = 'cartoladb'
 pg_url = 'pg-cartola.c3pssepl8cax.us-east-2.rds.amazonaws.com:5432'
+
+
+## https://github.com/wgenial/cartrolandofc/blob/master/nova-api.md
+## Endpoints da API do Cartola
+
+cartola_endpoint = dict()
+cartola_endpoint['mercado'] = 'https://api.cartolafc.globo.com/mercado/status'
+cartola_endpoint['escalados_destaques'] = 'https://api.cartolafc.globo.com/mercado/destaques'
+cartola_endpoint['patrocinadores'] = 'https://api.cartolafc.globo.com/patrocinadores'
+cartola_endpoint['rodadas'] = 'https://api.cartolafc.globo.com/rodadas'
+cartola_endpoint['partidas'] = 'https://api.cartolafc.globo.com/partidas'
+cartola_endpoint['partidas_rodada'] = 'https://api.cartolafc.globo.com/partidas/[rodada]'
+cartola_endpoint['clubes'] = 'https://api.cartolafc.globo.com/clubes'
+cartola_endpoint['atletas_mercado'] = 'https://api.cartolafc.globo.com/atletas/mercado'
+cartola_endpoint['atletas_pontuados'] = 'https://api.cartolafc.globo.com/atletas/pontuados'
+cartola_endpoint['pontos_destaques'] = 'https://api.cartolafc.globo.com/pos-rodada/destaques'
+cartola_endpoint['times'] = 'https://api.cartolafc.globo.com/times' # ?q=[nome do time]
+cartola_endpoint['time_slug'] = 'https://api.cartolafc.globo.com/time/slug' # /[slug do time] # /[slug do time]/[rodada]
+cartola_endpoint['ligas'] = 'https://api.cartolafc.globo.com/ligas' # ?q=[nome da liga]
+cartola_endpoint['liga_usuario'] = 'https://api.cartolafc.globo.com/auth/liga' # /[slug da liga]
+cartola_endpoint['time_usuario'] = 'https://api.cartolafc.globo.com/auth/time'
+cartola_endpoint['time_usuario_info'] = 'https://api.cartolafc.globo.com/auth/time/info'
+cartola_endpoint['ligas_usuario'] = 'https://api.cartolafc.globo.com/auth/ligas'
+cartola_endpoint['esquemas'] = 'https://api.cartolafc.globo.com/esquemas'
+cartola_endpoint['time_post'] = 'https://api.cartolafc.globo.com/auth/time/salvar'

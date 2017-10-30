@@ -22,7 +22,9 @@ class Csv2Python:
             df_list.append(df)
         df = pandas.concat(df_list)
         if 'ID' in df:
+            print('Eliminando Duplicados')
             df = df.drop_duplicates('ID', keep='last')
+            # print(df)
         return df
 
     @staticmethod
