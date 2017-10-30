@@ -3,6 +3,8 @@ from sqlalchemy.orm import sessionmaker
 from models.BaseModel import Base
 from psycopg2 import IntegrityError
 from constants import pg_user, pg_pswd, pg_url, pg_db
+import threading
+import math
 
 
 class PostGreConnector:
@@ -29,16 +31,33 @@ class PostGreConnector:
         except Exception as ex:
             print('Erro desconhecido', ex)
 
+
+    def InsertListParallel(self, data, no_threads):
+        l = len(data)
+        print('Initializing Threads')
+        for i in range(no_threads):
+            print(0+i* math.floor(l/no_threads), min(l + 1, int((i + 1) * math.floor(l / no_threads))))
+            t = threading.Thread(name='t' + str(i),
+                                 target=self.InsertListManual, args=(data[0+i* math.floor(l/no_threads):
+                                 min(l + 1, int((i + 1) * math.floor(l / no_threads)))],)
+                                 )
+            t.start()
+            print('Thread %s Running' % t.name)
+        t.join()
+
     def InsertListManual(self,data):
         for index, d in enumerate(data):
-            try:
-                print(index*100/len(data))
-                self.session.merge(d)
-                self.session.commit()
-            except Exception as ex:
-                self.session.rollback()
-                print(ex)
+            print('%s : ' % threading.current_thread().name, index * 100 / len(data))
+            self.InsertElement(d)
+
 
     def InsertElement(self, element):
-        self.session.merge(element)
-        self.session.commit()
+        try:
+            DBsession = sessionmaker()
+            DBsession.bind = self.engine
+            session = DBsession()
+            session.merge(element)
+            session.commit()
+        except Exception as ex:
+            session.rollback()
+            print(ex)

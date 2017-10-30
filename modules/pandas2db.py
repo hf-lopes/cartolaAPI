@@ -37,7 +37,7 @@ class Pandas2DB():
     def InsertScout(self, df):
         DB_list = Pandas2DB.Df2Db_Scout(df)
         # self.db_con.InsertList(DB_list)
-        self.db_con.InsertListManual(DB_list)
+        self.db_con.InsertListParallel(DB_list, 10)
 
     def InsertSkill(self):
         DB_list = Pandas2DB.Df2Db_Skill()
@@ -83,10 +83,10 @@ class Pandas2DB():
             for sigla in abreviacao:
                 Play_list.append(int(row[sigla]))
             if not math.isnan(row['Clube']):
-                scouts = Scout(id= int(index), player_id= int(row['Atleta']),
+                scouts = Scout(player_id= int(row['Atleta']), match_week = int(row['Rodada']),
                           team_id= row['Clube'], has_played= bool(row['Participou']), points= float(row['Pontos']),
                           average_points= float(row['PontosMedia']), price= float(row['Preco']),
-                          delta_price= float(row['PrecoVariacao']), plays= 1,
+                          delta_price= float(row['PrecoVariacao']), plays= Play_list,
                           year= int(row['Year']))
                 DB_list.append(scouts)
         return DB_list

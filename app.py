@@ -7,11 +7,11 @@ import pandas as pd
 # pgcon = PostGreConnector()
 # pgcon.DropAll()
 
-atletas = Csv2Python.read_players()
-partidas = Csv2Python.read_matches()
+# atletas = Csv2Python.read_players()
+# partidas = Csv2Python.read_matches()
+# times = Csv2Python.read_teams()
+# posicoes = Csv2Python.read_positions()
 scouts = Csv2Python.read_scouts()
-times = Csv2Python.read_teams()
-posicoes = Csv2Python.read_positions()
 
 pdcon = Pandas2DB()
 pdcon.createtables()
