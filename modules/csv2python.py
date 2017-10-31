@@ -9,7 +9,7 @@ class Csv2Python:
         return pandas.read_csv(ROOT_DIR + '/' + file_name)
 
     @staticmethod
-    def read_multiple_csv(file_name_list, yearly = True):
+    def read_multiple_csv(file_name_list, yearly = True, remove_repeated=True):
         df_list = []
         year = 2014
         for file in file_name_list:
@@ -21,15 +21,14 @@ class Csv2Python:
             year += 1
             df_list.append(df)
         df = pandas.concat(df_list)
-        if 'ID' in df:
+        if remove_repeated and 'ID' in df:
             print('Eliminando Duplicados')
             df = df.drop_duplicates('ID', keep='last')
-            # print(df)
         return df
 
     @staticmethod
     def read_players():
-        atletas = Csv2Python.read_multiple_csv(['db/2014/Atletas.csv', 'db/2015/Atletas.csv', 'db/2016/Atletas.csv'])
+        atletas = Csv2Python.read_multiple_csv(['db/2014/Atletas.csv', 'db/2015/Atletas.csv', 'db/2016/Atletas.csv'], remove_repeated=False)
         atletas = Csv2Python.merge_columns(atletas, 'Clube', 'ClubeID')
         atletas = Csv2Python.merge_columns(atletas, 'Posicao', 'PosicaoID')
         return atletas

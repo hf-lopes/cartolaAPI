@@ -10,7 +10,7 @@ import math
 class PostGreConnector:
 
     def __init__(self):
-        self.engine = create_engine('postgresql://hlopes:lopes_146@pg-cartola.c3pssepl8cax.us-east-2.rds.amazonaws.com:5432/cartoladb')
+        self.engine = create_engine('postgresql://hlopes:lopes_146@pg-cartola.c3pssepl8cax.us-east-2.rds.amazonaws.com:5432/cartoladb', pool_size = 40)
         DBsession = sessionmaker()
         DBsession.bind = self.engine
         self.session = DBsession()
@@ -23,12 +23,17 @@ class PostGreConnector:
         Base.metadata.drop_all(self.engine)
 
     def InsertList(self, data):
+        print('Starting thread %s ' % threading.current_thread().name)
         try:
-            self.session.add_all(data)
-            self.session.commit()
-        except IntegrityError as ex:
-            print('ID já presente na tabela')
+            DBsession = sessionmaker()
+            DBsession.bind = self.engine
+            session = DBsession()
+            session.add_all(data)
+            session.commit()
+            session.close()
         except Exception as ex:
+            session.rollback()
+            session.close()
             print('Erro desconhecido', ex)
 
 
@@ -38,7 +43,7 @@ class PostGreConnector:
         for i in range(no_threads):
             print(0+i* math.floor(l/no_threads), min(l + 1, int((i + 1) * math.floor(l / no_threads))))
             t = threading.Thread(name='t' + str(i),
-                                 target=self.InsertListManual, args=(data[0+i* math.floor(l/no_threads):
+                                 target=self.InsertList, args=(data[0+i* math.floor(l/no_threads):
                                  min(l + 1, int((i + 1) * math.floor(l / no_threads)))],)
                                  )
             t.start()

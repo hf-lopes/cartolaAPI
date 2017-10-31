@@ -23,38 +23,44 @@ class Pandas2DB():
 
     def InsertPlayer(self, df):
         DB_list = Pandas2DB.Df2Db_Player(df)
-        # self.db_con.InsertElement(DB_list[0])
-        self.db_con.InsertList(DB_list)
+        # self.db_con.InsertList(DB_list)
+        self.db_con.InsertListParallel(DB_list, 10)
 
     def InsertMatch(self, df):
         DB_list = Pandas2DB.Df2Db_Match(df)
-        self.db_con.InsertList(DB_list)
+        # self.db_con.InsertList(DB_list)
+        self.db_con.InsertListParallel(DB_list, 10)
 
     def InsertPosition(self, df):
         DB_list = Pandas2DB.Df2Db_Position(df)
-        self.db_con.InsertList(DB_list)
+        # self.db_con.InsertList(DB_list)
+        self.db_con.InsertListParallel(DB_list, 1)
 
     def InsertScout(self, df):
         DB_list = Pandas2DB.Df2Db_Scout(df)
         # self.db_con.InsertList(DB_list)
-        self.db_con.InsertListParallel(DB_list, 10)
+        self.db_con.InsertListParallel(DB_list, 30)
 
     def InsertSkill(self):
         DB_list = Pandas2DB.Df2Db_Skill()
-        self.db_con.InsertList(DB_list)
+        # self.db_con.InsertList(DB_list)
+        self.db_con.InsertListParallel(DB_list, 1)
 
     def InsertTeam(self, df):
         DB_list = Pandas2DB.Df2Db_Team(df)
-        self.db_con.InsertList(DB_list)
+        # self.db_con.InsertList(DB_list)
+        self.db_con.InsertListParallel(DB_list, 1)
 
     @staticmethod
     def Df2Db_Player(df):
         DB_list = []
         for index, row in df.iterrows():
             if not math.isnan(row['Clube']):
-                jogador = Player(id = row['ID'], name = row['Apelido'], team_id = int(row['Clube']), position_id = int(row['Posicao']),
+                jogador = Player(player_id = int(row['ID']), name = row['Apelido'], team_id = int(row['Clube']), position_id = int(row['Posicao']),
                             year = row['Year'])
                 DB_list.append(jogador)
+            else:
+                print('Player has no TeamID')
         return DB_list
 
     @staticmethod
