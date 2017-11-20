@@ -14,7 +14,8 @@ pontuacao = [1.7, -0.5, -6.0, -2.0, -5.0, 5.0, 3.00, 7.00, -2.0,
 pg_user = 'hlopes'
 pg_pswd = 'lopes_146'
 pg_db = 'cartoladb'
-pg_url = 'pg-cartola.c3pssepl8cax.us-east-2.rds.amazonaws.com:5432'
+pg_url = 'pg-cartola.c3pssepl8cax.us-east-2.rds.amazonaws.com'
+pg_port = '5432'
 
 
 ## https://github.com/wgenial/cartrolandofc/blob/master/nova-api.md
@@ -40,3 +41,5 @@ cartola_endpoint['time_usuario_info'] = 'https://api.cartolafc.globo.com/auth/ti
 cartola_endpoint['ligas_usuario'] = 'https://api.cartolafc.globo.com/auth/ligas'
 cartola_endpoint['esquemas'] = 'https://api.cartolafc.globo.com/esquemas'
 cartola_endpoint['time_post'] = 'https://api.cartolafc.globo.com/auth/time/salvar'
+
+NUM_PARALLEL_CONNECTIONS = 25

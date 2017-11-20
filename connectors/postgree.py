@@ -2,9 +2,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models.BaseModel import Base
 from psycopg2 import IntegrityError
-from constants import pg_user, pg_pswd, pg_url, pg_db
+from constants import pg_user, pg_pswd, pg_url, pg_db, pg_port, NUM_PARALLEL_CONNECTIONS
 import threading
 import math
+import time
+import pandas
+import psycopg2
 
 
 class PostGreConnector:
@@ -66,3 +69,50 @@ class PostGreConnector:
         except Exception as ex:
             session.rollback()
             print(ex)
+
+
+class PostGreConnectorSQL():
+
+    def __init__(self):
+        start_connect = time.time()
+        try:
+            self.con = psycopg2.connect("dbname=" + pg_db +
+                                        " user=" + pg_user +
+                                        " host=" + pg_url +
+                                        " port=" + pg_port +
+                                        " password=" + pg_pswd)
+            self.cursor = self.con.cursor()
+            print("Connected %s", time.time() - start_connect)
+
+        except psycopg2.ProgrammingError:
+            print("Query malformed")
+            raise Exception
+
+        except psycopg2.DatabaseError as ex:
+            print("DatabaseError: %s", ex)
+            raise Exception
+
+        except Exception as ex:
+            print("Internal Error: %s", ex)
+            raise Exception
+
+    def execute_query(self, query):
+
+        start_fetch = time.time()
+
+        # print("[INPUT] %s" % query)
+
+        try:
+            df = pandas.read_sql_query(query, self.con)
+            # print("[OUTPUT] Number of rows: %s Number of columns: %s Time: %s" %
+            #                  (df.shape[0], df.shape[1], "{0:.2}s".format(time.time() - start_fetch)))
+            return df
+        except psycopg2.ProgrammingError:
+            print("Query malformed")
+
+        except psycopg2.DatabaseError as ex:
+            print("DatabaseError: %s", ex)
+
+        except Exception as ex:
+            print("Internal Error: %s", ex)
+
