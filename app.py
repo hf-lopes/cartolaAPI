@@ -5,6 +5,7 @@ from modules.feature_queries import FeatureQueries
 import pandas as pd
 import time
 from modules.feature_calculator import FeatureCalculator
+from modules.model_calculation import ModelCalculation
 
 
 
@@ -29,7 +30,7 @@ from modules.feature_calculator import FeatureCalculator
 # # Pandas2DB().InsertSkill()
 # # print('Skills inseridos')
 # # Pandas2DB().InsertPosition(posicoes)
-# # print('Posições inseridos')
+# # print('Posicoes inseridos')
 # # Pandas2DB().InsertPlayer(atletas)
 # # print('Jogadores inseridos')
 # # Pandas2DB().InsertMatch(partidas)
@@ -38,12 +39,15 @@ from modules.feature_calculator import FeatureCalculator
 # print('Scouts inseridos')
 
 
-pg = PostGreConnectorSQL()
-fc = FeatureCalculator()
-scout_list = fc.generate_feature_queries(20000, 20100)
-fc.parallel_calculation(scout_list)
-sl = fc.get_scout_list()
-print(sl)
+# pg = PostGreConnectorSQL()
+# fc = FeatureCalculator()
+# scout_list = fc.generate_feature_queries(20000, 20100)
+# fc.parallel_calculation(scout_list)
+# sl = fc.get_scout_list()
+# print(sl)
 #
 # df = pg.execute_query(test.feature_query)
 # print(df)
+mc = ModelCalculation('245529727693709252570461385261081329471')
+mc.NN()
+
