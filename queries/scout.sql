@@ -1,0 +1,1 @@
+SELECT match_week FROM scout WHERE scout.id = {}

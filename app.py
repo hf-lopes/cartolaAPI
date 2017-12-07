@@ -1,17 +1,13 @@
-from modules.csv2python import Csv2Python
-from modules.pandas2db import Pandas2DB
-from connectors.postgree import PostGreConnector, PostGreConnectorSQL
-from modules.feature_queries import FeatureQueries
-import pandas as pd
-import time
-from modules.feature_calculator import FeatureCalculator
+from connectors.postgree import PostGreConnectorSQL, PostGreConnector
+from resources.feature_calculator import FeatureCalculator
 
 
 
 ## Code user to dump the csv files to postgres database
 ## DELETING ALL TABLES
-# # pgcon = PostGreConnector()
+pgcon = PostGreConnector()
 # # pgcon.DropAll()
+pgcon.CreateAllTables()
 
 # # Reading csvs into Pandas
 # # atletas = Csv2Python.read_players()
@@ -38,12 +34,8 @@ from modules.feature_calculator import FeatureCalculator
 # print('Scouts inseridos')
 
 
-pg = PostGreConnectorSQL()
 fc = FeatureCalculator()
-scout_list = fc.generate_feature_queries(20000, 20100)
-fc.parallel_calculation(scout_list)
-sl = fc.get_scout_list()
-print(sl)
+scout_list = fc.parallel_calculation(20000, 20100)
 #
 # df = pg.execute_query(test.feature_query)
 # print(df)
