@@ -23,14 +23,19 @@ class FeatureCalculator:
 
 
     def generate_feature_queries(self):
-        start_fetch = time.time()
-        df_scout = pd.DataFrame()
+
         while not self.q.empty():
+
+            df_scout = pd.DataFrame()
+            start_fetch = time.time()
             scout_id = self.q.get()
             fq = FeatureQueries(scout_id)
             start_time = time.time()
 
             df_scout = pd.concat([df_scout, fq.get_basic_info()], axis=1)
+            if df_scout.shape[0] == 0:
+                print('No scout for this ID')
+                continue
             for n_rounds in [1, 5, 10, 20]:
 
 
@@ -58,12 +63,12 @@ class FeatureCalculator:
                 for n_plays in range(1, 18):
                     df_scout = pd.concat([df_scout, fq.average_plays(scout_id=scout_id, n_rounds=n_rounds, play_type=n_plays)], axis=1)
 
-            print(df_scout)
             self.df = pd.concat([self.df, df_scout], axis=0)
             self.consume += 1
+            if self.consume // 1000 == 0:
+                self.df.to_csv('calculated_features_partial_' + str(self.consume) + '_' + self.hash + '.csv')
             print('Took %s ms to calculate all features for scout_id %s' % (1000*(time.time() - start_fetch), scout_id))
             print('Queue has %s elements' % (self.q.qsize()))
-        print('Generated queries for %s scouts' % str(len(self.descriptor_list)))
 
     def parallel_calculation(self, init_id, last_id):
         print('initializing queue')
@@ -78,6 +83,6 @@ class FeatureCalculator:
             t.start()
             print('Thread %s Running' % t.name)
         t.join()
-        self.df.to_csv()
+        self.df.to_csv('calculated_features_' + str(init_id) + '_' + str(last_id) + '_' + self.hash + '.csv')
         # self.pg.InsertList(self.descriptor_list)
 

@@ -50,7 +50,7 @@ from modules.model_calculation import ModelCalculation
 
 pg = PostGreConnectorSQL()
 fc = FeatureCalculator()
-fc.parallel_calculation(20000, 20100)
+fc.parallel_calculation(20000, 20005)
 
 # df = pg.execute_query(test.feature_query)
 # print(df)
