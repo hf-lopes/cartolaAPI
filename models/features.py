@@ -6,6 +6,7 @@ class Features(Base):
 
     name = Column(String, nullable = False)
     feature_query = Column(String, nullable=False)
+    feature_value = Column(Float, nullable=True)
 
     def __repr__(self):
         return "<Feature(name='%s', query=%s)>" % (self.name, self.feature_query)

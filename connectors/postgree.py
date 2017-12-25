@@ -1,6 +1,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models.BaseModel import Base
+from models.Players import Player
+from models.Positions import Position
+from models.Matches import Match
+from models.Skills import Skill
+from models.Teams import Team
+from models.Scouts import Scout
 from psycopg2 import IntegrityError
 from constants import pg_user, pg_pswd, pg_url, pg_db, pg_port, NUM_PARALLEL_CONNECTIONS
 import threading
@@ -70,6 +76,11 @@ class PostGreConnector:
             session.rollback()
             print(ex)
 
+    def QueryScout(self, scout_id):
+        scout = self.session.query(Scout).filter(Scout.id == scout_id).one()
+        return scout
+
+
 
 class PostGreConnectorSQL():
 
@@ -104,8 +115,8 @@ class PostGreConnectorSQL():
 
         try:
             df = pandas.read_sql_query(query, self.con)
-            # print("[OUTPUT] Number of rows: %s Number of columns: %s Time: %s" %
-            #                  (df.shape[0], df.shape[1], "{0:.2}s".format(time.time() - start_fetch)))
+            print("[OUTPUT] Number of rows: %s Number of columns: %s Time: %s" %
+                             (df.shape[0], df.shape[1], "{0:.2}s".format(time.time() - start_fetch)))
             return df
         except psycopg2.ProgrammingError:
             print("Query malformed")
