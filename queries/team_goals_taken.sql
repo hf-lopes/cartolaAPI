@@ -1,7 +1,7 @@
 SELECT CAST(SUM(
           CASE WHEN team.id = match.home_team_id
           THEN match.visiting_score
-          ELSE match.home_score END) AS FLOAT) / {} as feature_value, team.name, team.id
+          ELSE match.home_score END) AS FLOAT) / {} as {}, team.name, team.id
         FROM
             (SELECT team.id as t_id, scout.year as s_year, scout.match_week as s_rodada
              FROM scout

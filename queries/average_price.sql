@@ -1,4 +1,4 @@
-SELECT sum(scout.points) / {} as {} , player.name
+SELECT sum(scout.price) / {} as {} , player.name
   FROM
       (SELECT player.player_id as p_id, player.name as p_name, player.year as p_year,
       scout.match_week as s_round FROM scout
