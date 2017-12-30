@@ -42,7 +42,6 @@ class FeatureCalculator:
 
             df_scout = pd.concat([df_scout, fq.get_basic_info()], axis=1)
 
-            df_scout = pd.concat([df_scout, fq.get_score(scout_id)], axis=1)
             if df_scout.shape[0] == 0:
                 print('No scout for this ID')
                 continue
@@ -70,7 +69,7 @@ class FeatureCalculator:
                 df_scout = pd.concat([df_scout, fq.team_goals_taken(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
 
-                for n_plays in range(1, 18):
+                for n_plays in range(1, 19):
                     df_scout = pd.concat([df_scout, fq.average_plays(scout_id=scout_id, n_rounds=n_rounds, play_type=n_plays)], axis=1)
 
             print(df_scout)
