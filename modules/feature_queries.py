@@ -3,17 +3,13 @@ from connectors.postgree import PostGreConnectorSQL
 import pandas
 from constants import abreviacao
 
-
+# TODO: Casa ou Visitante pegando rodada errada, pegar a proxima rodada
+# TODO: Cleanshets usando count
+# TODO: Separar desempenho dos times entre casa e fora
+# TODO: Verificar dados has played
 # NEW FEATURES:
-# -- Casa ou Visitante (FACIL) -- DONE
 # -- Colocacao no Campeonato (MEDIO)
 # -- Posse de Bola (DIFICIL)
-# -- Average Price (FACIL) -- DONE
-# -- Has played? ignorar jogadores que nao jogaram (FACIL)
-# -- Posicao? Usar como feature ou para dividir o treinamento do dataset
-# -- CleanSheets (Média)
-# -- Gols feitos e tomados pelo time adversario -- DONE
-# -- Desempenho em casa e fora do time adversario -- DONE
 
 class FeatureQueries:
 
