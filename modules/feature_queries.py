@@ -144,16 +144,6 @@ class FeatureQueries:
         df.set_index('scout_id', inplace=True)
         return df[feature_name]
 
-    def get_score(self, scout_id):
-        feature_name = 'next_score'
-        # print('Calculating feature %s' % feature_name)
-        query_file = open('queries/next_round_points.sql')
-        query_file = query_file.read()
-        feature_query = query_file.format(feature_name, scout_id)
-        df = self.pg.execute_query(feature_query)
-        df.set_index('scout_id', inplace=True)
-        return df[feature_name]
-
     def get_basic_info(self):
         return self.basic_info
 

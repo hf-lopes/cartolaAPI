@@ -69,7 +69,7 @@ class Csv2Python:
 
     @staticmethod
     def read_scouts():
-        scouts = Csv2Python.read_multiple_csv(['db/2014/Scouts.csv', 'db/2015/Scouts.csv', 'db/2016/Scouts.csv'])
+        # scouts = Csv2Python.read_multiple_csv(['db/2014/Scouts.csv', 'db/2015/Scouts.csv', 'db/2016/Scouts.csv'])
         # scouts = Csv2Python.read_csv('db/2017/Scouts.csv')
         # scouts.drop(['atletas.apelido', 'atletas.foto', 'atletas.nome'], axis=1)
         # scouts['jogou'] = False
@@ -86,7 +86,7 @@ class Csv2Python:
         # scouts.to_csv('db/2017/Scouts_corrigidos.csv')
         # return scouts
         print('uau')
-        df = Csv2Python.read_csv('db/2015/Scouts.csv')
+        df = Csv2Python.read_csv('db/2017/Scouts.csv')
         df_final = pandas.DataFrame()
         for round_ in range(1,39):
             suffixes = ('_curr', '_prev')
@@ -121,7 +121,7 @@ class Csv2Python:
 
             print(df_final)
             df_final = pandas.concat([df_final, df_players])
-        df_final['Year'] = 2015
+        df_final['Year'] = 2017
         return df_final
 
 
