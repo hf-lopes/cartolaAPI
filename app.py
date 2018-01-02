@@ -24,6 +24,8 @@ from modules.model_calculation import ModelCalculation
 # scouts = Csv2Python.read_scouts()
 # print(scouts.columns)
 
+
+
 # Convert pandas into sql elements
 # pdcon = Pandas2DB()
 # pdcon.createtables()
@@ -47,10 +49,10 @@ from modules.model_calculation import ModelCalculation
 # Pandas2DB().InsertScout(scouts)
 # print('Scouts inseridos')
 
-
+#
 pg = PostGreConnectorSQL()
 fc = FeatureCalculator()
-fc.parallel_calculation(19356, 218115)
+fc.parallel_calculation(19356, 253493)
 
 # df = pg.execute_query(test.feature_query)
 # print(df)

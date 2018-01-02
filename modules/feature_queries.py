@@ -41,7 +41,7 @@ class FeatureQueries:
         return df[feature_name]
 
     def average_plays(self, scout_id, n_rounds, play_type):
-        feature_name = 'average_plays_last_' + str(n_rounds) + '_rounds_' + abreviacao[play_type].lower() + '_play'
+        feature_name = 'average_plays_last_' + str(n_rounds) + '_rounds_' + abreviacao[play_type - 1].lower() + '_play'
         # print('Calculating feature %s' % feature_name)
         query_file = open('queries/average_plays.sql')
         query_file = query_file.read()

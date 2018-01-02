@@ -14,6 +14,7 @@ import math
 import time
 import pandas
 import psycopg2
+from multiprocessing import Queue
 
 
 class PostGreConnector:
@@ -23,6 +24,7 @@ class PostGreConnector:
         DBsession = sessionmaker()
         DBsession.bind = self.engine
         self.session = DBsession()
+        self.q = Queue()
 
     def CreateAllTables(self):
         Base.metadata.create_all(self.engine)
@@ -32,6 +34,7 @@ class PostGreConnector:
         Base.metadata.drop_all(self.engine)
 
     def InsertList(self, data):
+        time.sleep(2)
         print('Starting thread %s ' % threading.current_thread().name)
         try:
             DBsession = sessionmaker()
@@ -50,19 +53,19 @@ class PostGreConnector:
         l = len(data)
         print('Initializing Threads')
         for i in range(no_threads):
-            print(0+i* math.floor(l/no_threads), min(l + 1, int((i + 1) * math.floor(l / no_threads))))
             t = threading.Thread(name='t' + str(i),
-                                 target=self.InsertList, args=(data[0+i* math.floor(l/no_threads):
-                                 min(l + 1, int((i + 1) * math.floor(l / no_threads)))],)
-                                 )
+                                 target=self.InsertListManual)
             t.start()
             print('Thread %s Running' % t.name)
+        for d in data:
+            self.q.put(d)
         t.join()
 
-    def InsertListManual(self,data):
-        for index, d in enumerate(data):
-            print('%s : ' % threading.current_thread().name, index * 100 / len(data))
-            self.InsertElement(d)
+    def InsertListManual(self):
+        time.sleep(2)
+        while not self.q.empty():
+            element = self.q.get()
+            self.InsertElement(element)
 
 
     def InsertElement(self, element):

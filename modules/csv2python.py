@@ -85,8 +85,7 @@ class Csv2Python:
         # scouts.fillna(0, inplace=True)
         # scouts.to_csv('db/2017/Scouts_corrigidos.csv')
         # return scouts
-        print('uau')
-        df = Csv2Python.read_csv('db/2017/Scouts.csv')
+        df = Csv2Python.read_csv('db/2017/Scouts_corrigidos.csv')
         df_final = pandas.DataFrame()
         for round_ in range(1,39):
             suffixes = ('_curr', '_prev')
@@ -102,26 +101,35 @@ class Csv2Python:
                 df_players = df_round
                 df_players['Participou'] = False
             else:
-                df_round_prev = df[df['Rodada'] < round_].groupby('AtletaID', as_index=False)[cols_scouts].max()
-                df_jogos = df[df['Rodada'] < round_].groupby('AtletaID', as_index=False)['Jogos'].max()
-                df_players = df_round.merge(df_round_prev, how='left', on=['AtletaID'], suffixes=suffixes)
-                df_players = df_players.merge(df_jogos, how='left', on=['AtletaID'], suffixes=suffixes)
+                df_round_prev = df[df['Rodada'] < round_].groupby('atletas_atleta_id', as_index=False)[cols_scouts].max()
+                df_jogos = df[df['Rodada'] < round_].groupby('atletas_atleta_id', as_index=False)['atletas.jogos_num'].max()
+                df_players = df_round.merge(df_round_prev, how='left', on=['atletas_atleta_id'], suffixes=suffixes)
+                df_players = df_players.merge(df_jogos, how='left', on=['atletas_atleta_id'], suffixes=suffixes)
                 # if is the first round of a player, the scouts of previous rounds will be NaNs. Thus, set them to zero
                 df_players.fillna(value=0, inplace=True)
-                print(df.columns)
                 # compute the scouts
                 df_players[cols_current] = df_players[cols_current].values - df_players[cols_prev].values
-                df_players['Participou'] = df_players['Jogos_curr'].values - df_players['Jogos_prev'].values
+                df_players['Participou'] = df_players['atletas.jogos_num_curr'].values > df_players['atletas.jogos_num_prev'].values
                 # update the columns
-                df_players.drop(['Jogos_prev'], axis=1, inplace=True)
+
+                df_players.drop(['atletas.jogos_num_prev'], axis=1, inplace=True)
                 df_players.drop(labels=cols_prev, axis=1, inplace=True)
                 df_players = df_players.rename(columns=dict(zip(cols_current, cols_scouts)))
-                df_players = df_players.rename(columns=dict(zip('Jogos_curr', 'Jogos')))
+                df_players = df_players.rename(columns=dict(zip('atletas.jogos_num_curr', 'atletas.jogos_num')))
                 df_players.SG = df_players.SG.clip_lower(0)
 
-            print(df_final)
+
             df_final = pandas.concat([df_final, df_players])
+        df_final.drop(['jogou'], axis=1, inplace=True)
+
+        df_final.drop(['atletas.foto'], axis=1, inplace=True)
+        df_final.drop(['atletas.posicao_id'], axis=1, inplace=True)
+        df_final.drop(['atletas.nome'], axis=1, inplace=True)
+
+        df_final.drop(['athletes.atletas.scout'], axis=1, inplace=True)
         df_final['Year'] = 2017
+
+        print(df_final.columns)
         return df_final
 
 

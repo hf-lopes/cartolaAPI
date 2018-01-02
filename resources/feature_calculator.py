@@ -23,14 +23,12 @@ class FeatureCalculator:
 
 
     def generate_feature_queries(self):
-
-        print('aqui')
+        time.sleep(2)
         while not self.q.empty():
 
             df_scout = pd.DataFrame()
             start_fetch = time.time()
             interval = self.q.get()
-            print(interval)
             values = list()
             for value in range(interval[0], interval[1]):
                 values.append(value)
@@ -76,15 +74,13 @@ class FeatureCalculator:
             self.df = pd.concat([self.df, df_scout], axis=0)
             self.consume += 1
             if self.consume // 1000 == 0:
-                self.df.to_csv('calculated_features_partial_' + str(self.consume) + '_' + self.hash + '.csv')
+                self.df.to_csv('datasets/calculated_features_partial_' + str(self.consume) + '_' + self.hash + '.csv')
             print('Took %s ms to calculate all features for scout_id %s' % (1000*(time.time() - start_fetch), scout_id))
             print('Queue has %s elements' % (self.q.qsize()))
 
     def parallel_calculation(self, init_id, last_id):
         print('initializing queue')
 
-        for scout_id in range(init_id, last_id + 1, 1000):
-            self.q.put([scout_id, scout_id + 1000])
 
         self.hash = str(random.getrandbits(128))
         print('Initializing Threads')
@@ -93,7 +89,11 @@ class FeatureCalculator:
                                  target=self.generate_feature_queries)
             t.start()
             print('Thread %s Running' % t.name)
+
+
+        for scout_id in range(init_id, last_id + 1, 1000):
+            self.q.put([scout_id, scout_id + 1000])
         t.join()
-        self.df.to_csv('calculated_features_' + str(init_id) + '_' + str(last_id) + '_' + self.hash + '.csv')
+        self.df.to_csv('datasets/calculated_features_final' + str(init_id) + '_' + str(last_id) + '_' + self.hash + '.csv')
         # self.pg.InsertList(self.descriptor_list)
 
