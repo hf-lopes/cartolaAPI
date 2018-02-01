@@ -43,7 +43,7 @@ class FeatureCalculator:
             if df_scout.shape[0] == 0:
                 print('No scout for this ID')
                 continue
-            for n_rounds in [1, 5, 10, 20]:
+            for n_rounds in [1, 5, 10, 20, 30]:
 
 
                 df_scout = pd.concat([df_scout, fq.average_points(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
@@ -70,13 +70,13 @@ class FeatureCalculator:
                 for n_plays in range(1, 19):
                     df_scout = pd.concat([df_scout, fq.average_plays(scout_id=scout_id, n_rounds=n_rounds, play_type=n_plays)], axis=1)
 
-            print(df_scout)
+            # print(df_scout)
             self.df = pd.concat([self.df, df_scout], axis=0)
             self.consume += 1
             if self.consume // 1000 == 0:
                 self.df.to_csv('datasets/calculated_features_partial_' + str(self.consume) + '_' + self.hash + '.csv')
             print('Took %s ms to calculate all features for scout_id %s' % (1000*(time.time() - start_fetch), scout_id))
-            print('Queue has %s elements' % (self.q.qsize()))
+            # print('Queue has %s elements' % (self.q.qsize()))
 
     def parallel_calculation(self, init_id, last_id):
         print('initializing queue')

@@ -23,7 +23,7 @@ class FeatureQueries:
         # print('Calculating feature %s' % feature_name)
         query_file = open('queries/average_points.sql')
         query_file = query_file.read()
-        feature_query = query_file.format(n_rounds,feature_name, scout_id, n_rounds)
+        feature_query = query_file.format(n_rounds,feature_name, scout_id, n_rounds, n_rounds)
         df = self.pg.execute_query(feature_query)
         df.set_index('scout_id', inplace=True)
         return df[feature_name]
@@ -34,7 +34,7 @@ class FeatureQueries:
         # print('Calculating feature %s' % feature_name)
         query_file = open('queries/average_price.sql')
         query_file = query_file.read()
-        feature_query = query_file.format(n_rounds,feature_name, scout_id, n_rounds)
+        feature_query = query_file.format(n_rounds,feature_name, scout_id, n_rounds, n_rounds)
         df = self.pg.execute_query(feature_query)
         df.set_index('scout_id', inplace=True)
 
@@ -45,7 +45,7 @@ class FeatureQueries:
         # print('Calculating feature %s' % feature_name)
         query_file = open('queries/average_plays.sql')
         query_file = query_file.read()
-        feature_query = query_file.format(play_type, n_rounds, feature_name, scout_id, n_rounds)
+        feature_query = query_file.format(play_type, n_rounds, feature_name, scout_id, n_rounds, n_rounds)
         df = self.pg.execute_query(feature_query)
         df.set_index('scout_id', inplace=True)
 
