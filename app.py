@@ -5,7 +5,6 @@ from modules.feature_queries import FeatureQueries
 import pandas as pd
 import time
 from resources.feature_calculator import FeatureCalculator
-from modules.model_calculation import ModelCalculation
 
 
 

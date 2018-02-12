@@ -3,3 +3,5 @@ env_cartola/
 */__pycache__/*
 .idea
 .DS_Store
+*-checkpoint*
+*~lock*

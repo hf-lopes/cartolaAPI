@@ -1,0 +1,34 @@
+# Features:
+	Criar Features de alto nível que combinem features básicas
+	- Chance de participação em gols
+	- Chance de clean sheet
+	- Indice de participação
+	- Indice de agressividade
+	- Gols em casa
+	- Gols fora
+	- Chance de vitória
+
+# Modelo:
+	Definir visualizaçẽs de features
+	- Grafico pizza para features de classificação
+	- Swarm graph para ver correlação entre features e score
+
+	Implementar Cross Validation para treinamento
+	- Fixar ultimas X rodadas como teste
+	- Definir cross validation de forma que treine em todas as rodadas anteriores e valide em uma só
+
+	Definir métricas de avaliação de resultados
+	- Medir erro médio nos dez melhores jogadores previstos pelo modelo em relação ao real
+	- Medir erro médio dos dez mehlores jogadores reais pelo valor previsto
+	- Medir erro sem os 10% das pontas
+	- Medir performance por posição
+
+# Sistema Real-Time
+	Implementar connector com o cartola
+	- Definir quais endpoints bater para pegar as infos
+	- Formatar dados para inserir no banco
+
+	Treinamento Real Time
+	- Implementar lambda para rerodar leitura da api do cartola de tempos em tempos
+	- Implementar lambda para ativar treinamento do modelo sempre que algum dado for lido da API
+
