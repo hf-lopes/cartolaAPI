@@ -75,3 +75,4 @@ class DatasetProcessing():
     def correct_dataset(self):
         self.df.loc[self.df.home_team == 0, 'home_team'] = -1
         self.df = self.df.loc[self.df.has_played == 1]
+        return self.df

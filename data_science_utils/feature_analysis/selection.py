@@ -2,10 +2,10 @@ import numpy as np
 import operator
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import KFold
-from sklearn.metrics import fbeta_score
+from sklearn.metrics import mean_squared_error
 from sklearn.feature_selection import RFE, RFECV
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import seaborn as sns
@@ -15,9 +15,9 @@ import matplotlib.pyplot as plt
 class FeatureSelection:
     def __init__(self, df, auxiliary):
         self.df = df
-        self.X = df.drop(['target'], axis=1)
+        self.X = df.drop(['score'], axis=1)
         self.X.drop(auxiliary, axis=1, inplace=True)
-        self.y = df.target
+        self.y = df.score
         self.selected_features = list(self.X.columns)
 
     ## Feature Ranking
@@ -51,19 +51,19 @@ class FeatureSelection:
             for train_index, test_index in kf.split(train):
                 X_train, X_test = train[train_index], train[test_index]
                 y_train, y_test = self.y.iloc[train_index], self.y.iloc[test_index]
-                clas = DecisionTreeClassifier(max_depth=3)
+                clas = RandomForestRegressor(n_estimators=10)
                 clas.fit(X_train, y_train)
                 train_predict = clas.predict(X_train)
                 test_predict = clas.predict(X_test)
-                train_score += fbeta_score(train_predict > threshold, y_train, beta=0.1, average='macro')
-                test_score += fbeta_score(test_predict > threshold, y_test, beta=0.1, average='macro')
+                train_score += mean_squared_error(train_predict, y_train)
+                test_score += mean_squared_error(test_predict, y_test)
 
             clas_train_score[column] = train_score / kf.get_n_splits(train)
             clas_test_score[column] = test_score / kf.get_n_splits(train)
 
-        sorted_test_score = sorted(clas_test_score.items(), key=operator.itemgetter(1), reverse=True)
+        sorted_test_score = sorted(clas_test_score.items(), key=operator.itemgetter(1), reverse=False)
         top_columns = []
-        print('Single feature fbeta_score for test and train:')
+        print('Single feature root mean square for test and train:')
         for key, value in sorted_test_score:
             top_columns.append(key)
             print('{0:.<50}{1}       {2}'.format(key, str(value), str(clas_train_score[key])))
@@ -81,7 +81,7 @@ class FeatureSelection:
     # -- Wrapers: feature selection using model score as parameter
     # -- Embedded: during trainig feature selection (already done by xgboost)
     def RFE(self, num_features=5, replace=False):
-        model = RandomForestClassifier()
+        model = LinearRegression()
         rfe = RFE(model, num_features)
         rfe = rfe.fit(self.X, self.y)
         col = self.selected_features
@@ -100,7 +100,7 @@ class FeatureSelection:
             self.selected_features = best_feats
 
     def RFECV(self, replace=False, scoring='accuracy'):
-        model = RandomForestClassifier()
+        model = LinearRegression()
         rfe = RFECV(model, cv=5, scoring=scoring)
         rfe = rfe.fit(self.X, self.y)
         num_features = rfe.n_features_

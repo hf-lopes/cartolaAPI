@@ -76,11 +76,9 @@ class EvaluationMetrics:
             for year in range(2015, 2018):
                 top_players, evaluation = self.get_best_team(match_week=match_week, year=year, real=False, show=False)
                 if type(top_players) is not str:
-                    points_list.append(evaluation['pred_sum'])
+                    points_list.append(evaluation['desired_sum'])
 
-        avg_points = np.sum(points_list) / len(points_list)
-        print("Avg model points per round is %s " % str(avg_points))
-        return avg_points
+        return points_list
 
 
     def __eval_metrics(self, desired, preds1, show=True):

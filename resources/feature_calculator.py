@@ -43,18 +43,30 @@ class FeatureCalculator:
             if df_scout.shape[0] == 0:
                 print('No scout for this ID')
                 continue
-            for n_rounds in [1, 5, 10, 20, 30]:
+            for n_rounds in [1, 10, 20, 30]:
 
 
                 df_scout = pd.concat([df_scout, fq.average_points(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
                 df_scout = pd.concat([df_scout, fq.average_price(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
-                df_scout = pd.concat([df_scout, fq.team_points(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+                df_scout = pd.concat([df_scout, fq.stddev_points(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.stddev_price(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_average_points(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_average_price(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.enemy_average_points(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.enemy_average_price(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
                 df_scout = pd.concat([df_scout, fq.team_goals_scored(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
                 df_scout = pd.concat([df_scout, fq.team_goals_taken(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_points(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
                 df_scout = pd.concat([df_scout, fq.enemy_goals_scored(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
@@ -64,8 +76,51 @@ class FeatureCalculator:
 
                 df_scout = pd.concat([df_scout, fq.home_away(scout_id=scout_id)], axis=1)
 
-                df_scout = pd.concat([df_scout, fq.team_goals_taken(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+                df_scout = pd.concat([df_scout, fq.team_points_enemy_points_ratio(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
+                df_scout = pd.concat([df_scout, fq.team_goals_scored_enemy_goals_taken_ratio(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_goals_taken_enemy_goals_scored_ratio(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_goals_taken_enemy_goals_scored_ratio_home_away(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_goals_scored_enemy_goals_taken_ratio_home_away(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_price_enemy_price_ratio(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_points_enemy_points_ratio(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.num_std_dev_team_points_enemy_points(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_points_enemy_points_ratio_home_away(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_points_enemy_points_ratio_home_away(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.clean_sheet_chance(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.player_goal_participation_team_ratio(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_offense_enemy_defense(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_defense_enemy_offense(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_defense_enemy_goals(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_rb_enemy_pe(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.player_pe_enemy_rb(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.player_fs_enemy_fc(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.enemy_fs_player_fc_ca_cv(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_offense_enemy_fauls(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_fauls_enemy_offense(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.team_goal_chance(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+
+                df_scout = pd.concat([df_scout, fq.enemy_goal_chance(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
                 for n_plays in range(1, 19):
                     df_scout = pd.concat([df_scout, fq.average_plays(scout_id=scout_id, n_rounds=n_rounds, play_type=n_plays)], axis=1)
@@ -78,7 +133,7 @@ class FeatureCalculator:
             print('Took %s ms to calculate all features for scout_id %s' % (1000*(time.time() - start_fetch), scout_id))
             # print('Queue has %s elements' % (self.q.qsize()))
 
-    def parallel_calculation(self, init_id, last_id):
+    def parallel_calculation(self, init_id, last_id, description='default'):
         print('initializing queue')
 
 
@@ -94,6 +149,6 @@ class FeatureCalculator:
         for scout_id in range(init_id, last_id + 1, 1000):
             self.q.put([scout_id, scout_id + 1000])
         t.join()
-        self.df.to_csv('datasets/calculated_features_final' + str(init_id) + '_' + str(last_id) + '_' + self.hash + '.csv')
+        self.df.to_csv('datasets/calculated_features_final_' + description + '_' + str(init_id) + '_' + str(last_id) + '_' + self.hash + '.csv')
         # self.pg.InsertList(self.descriptor_list)
 
