@@ -92,9 +92,7 @@ class FeatureCalculator:
 
                 df_scout = pd.concat([df_scout, fq.num_std_dev_team_points_enemy_points(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
-                df_scout = pd.concat([df_scout, fq.team_points_enemy_points_ratio_home_away(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
-
-                df_scout = pd.concat([df_scout, fq.team_points_enemy_points_ratio_home_away(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
+                # df_scout = pd.concat([df_scout, fq.team_points_enemy_points_ratio_home_away(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
                 df_scout = pd.concat([df_scout, fq.clean_sheet_chance(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
@@ -128,8 +126,7 @@ class FeatureCalculator:
             # print(df_scout)
             self.df = pd.concat([self.df, df_scout], axis=0)
             self.consume += 1
-            if self.consume // 1000 == 0:
-                self.df.to_csv('datasets/calculated_features_partial_' + str(self.consume) + '_' + self.hash + '.csv')
+            self.df.to_csv('datasets/calculated_features_partial_' + str(self.consume) + '_' + self.hash + '.csv')
             print('Took %s ms to calculate all features for scout_id %s' % (1000*(time.time() - start_fetch), scout_id))
             # print('Queue has %s elements' % (self.q.qsize()))
 
@@ -146,8 +143,8 @@ class FeatureCalculator:
             print('Thread %s Running' % t.name)
 
 
-        for scout_id in range(init_id, last_id + 1, 1000):
-            self.q.put([scout_id, scout_id + 1000])
+        for scout_id in range(init_id, last_id + 1, 5000):
+            self.q.put([scout_id, scout_id + 5000])
         t.join()
         self.df.to_csv('datasets/calculated_features_final_' + description + '_' + str(init_id) + '_' + str(last_id) + '_' + self.hash + '.csv')
         # self.pg.InsertList(self.descriptor_list)

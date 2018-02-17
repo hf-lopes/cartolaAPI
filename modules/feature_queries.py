@@ -440,13 +440,14 @@ class FeatureQueries:
 
         df_team_home = df_team_home.loc[df_enemy_away.index]
 
-        df_team_home[feature_name] = df_team_home * df_enemy_away
+        df_team_home = df_team_home * df_enemy_away
 
         df_team_away = df_team_away.loc[df_enemy_home.index]
 
-        df_team_away[feature_name] = df_team_away * df_enemy_home
+        df_team_away = df_team_away * df_enemy_home
 
-        final_df = pd.concat([df_team_home[feature_name], df_team_away[feature_name]], axis=0)
+        final_df = pd.concat([df_team_home, df_team_away], axis=0)
+
         return final_df
 
     def team_goals_scored_enemy_goals_taken_ratio_home_away(self, scout_id, n_rounds):
@@ -457,16 +458,16 @@ class FeatureQueries:
         df_enemy_home = self.enemy_goals_taken_home(scout_id=scout_id, n_rounds=n_rounds)
         df_team_home = self.team_goals_scored_home(scout_id=scout_id, n_rounds=n_rounds)
 
-
         df_team_home = df_team_home.loc[df_enemy_away.index]
 
-        df_team_home[feature_name] = df_team_home * df_enemy_away
+        df_team_home = df_team_home * df_enemy_away
 
         df_team_away = df_team_away.loc[df_enemy_home.index]
 
-        df_team_away[feature_name] = df_team_away * df_enemy_home
+        df_team_away = df_team_away * df_enemy_home
 
-        final_df = pd.concat([df_team_home[feature_name], df_team_away[feature_name]], axis=0)
+        final_df = pd.concat([df_team_home, df_team_away], axis=0)
+
         return final_df
 
 
@@ -490,6 +491,7 @@ class FeatureQueries:
         df_team = self.team_average_points(scout_id=scout_id, n_rounds=n_rounds)
         df_stddev = self.team_stddev_points(scout_id=scout_id, n_rounds=n_rounds)
         df_team[feature_name] = (df_team - df_enemy) / df_stddev
+
         return df_team[feature_name]
 
     def team_points_enemy_points_ratio_home_away(self, scout_id, n_rounds):
@@ -503,13 +505,14 @@ class FeatureQueries:
 
         df_team_home = df_team_home.loc[df_enemy_away.index]
 
-        df_team_home[feature_name] = df_team_home * df_enemy_away
+        df_team_home = df_team_home * df_enemy_away
 
         df_team_away = df_team_away.loc[df_enemy_home.index]
 
-        df_team_away[feature_name] = df_team_away * df_enemy_home
+        df_team_away = df_team_away * df_enemy_home
 
-        final_df = pd.concat([df_team_home[feature_name], df_team_away[feature_name]], axis=0)
+        final_df = pd.concat([df_team_home, df_team_away], axis=0)
+
         return final_df
 
 
