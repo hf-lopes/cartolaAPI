@@ -10,6 +10,7 @@ import pandas as pd
 import numpy as np
 from multiprocessing import Queue
 from constants import abreviacao
+import os
 
 
 class FeatureCalculator:
@@ -28,7 +29,7 @@ class FeatureCalculator:
 
             df_scout = pd.DataFrame()
             start_fetch = time.time()
-            interval = self.q.get()
+            interval = self.q.get(block=True, timeout=10)
             values = list()
             for value in range(interval[0], interval[1]):
                 values.append(value)
@@ -124,28 +125,42 @@ class FeatureCalculator:
                     df_scout = pd.concat([df_scout, fq.average_plays(scout_id=scout_id, n_rounds=n_rounds, play_type=n_plays)], axis=1)
 
             # print(df_scout)
-            self.df = pd.concat([self.df, df_scout], axis=0)
+            # self.df = pd.concat([self.df, df_scout], axis=0)
             self.consume += 1
-            self.df.to_csv('datasets/calculated_features_partial_' + str(self.consume) + '_' + self.hash + '.csv')
+            df_scout.to_csv('datasets/' + self.hash + '_calculated_features_partial_' + str(self.consume) + '_' + self.description + '_.csv')
             print('Took %s ms to calculate all features for scout_id %s' % (1000*(time.time() - start_fetch), scout_id))
             # print('Queue has %s elements' % (self.q.qsize()))
 
-    def parallel_calculation(self, init_id, last_id, description='default'):
+    def parallel_calculation(self, init_id, last_id,split_size= 1000, description='default'):
         print('initializing queue')
 
 
         self.hash = str(random.getrandbits(128))
+        self.description = description
         print('Initializing Threads')
+        t_list = []
         for i in range(NUM_PARALLEL_CONNECTIONS):
-            t = threading.Thread(name='t' + str(i),
-                                 target=self.generate_feature_queries)
-            t.start()
-            print('Thread %s Running' % t.name)
+            t_list.append(threading.Thread(name='t' + str(i),
+                                 target=self.generate_feature_queries))
+            t_list[i].start()
+            print('Thread %s Running' % t_list[i].name)
 
 
-        for scout_id in range(init_id, last_id + 1, 5000):
-            self.q.put([scout_id, scout_id + 5000])
-        t.join()
-        self.df.to_csv('datasets/calculated_features_final_' + description + '_' + str(init_id) + '_' + str(last_id) + '_' + self.hash + '.csv')
+        for scout_id in range(init_id, last_id + 1, split_size):
+            self.q.put([scout_id, scout_id + split_size])
+
+        for t in t_list:
+            t.join()
+
+        print('Concatenating all dataframes')
+        self.__concatenate_all()
         # self.pg.InsertList(self.descriptor_list)
 
+
+    def __concatenate_all(self):
+        self.df = pd.DataFrame()
+        for file in os.listdir("datasets/"):
+            if self.hash in file:
+                self.df = pd.concat([self.df, pd.read_csv("datasets/" + file)])
+
+        self.df.to_csv('datasets/' + self.hash + '_FINAL_' + self.description + '_.csv')

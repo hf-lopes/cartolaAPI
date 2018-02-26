@@ -63,4 +63,4 @@ cartola_endpoint['ligas_usuario'] = 'https://api.cartolafc.globo.com/auth/ligas'
 cartola_endpoint['esquemas'] = 'https://api.cartolafc.globo.com/esquemas'
 cartola_endpoint['time_post'] = 'https://api.cartolafc.globo.com/auth/time/salvar'
 
-NUM_PARALLEL_CONNECTIONS = 6
+NUM_PARALLEL_CONNECTIONS = 10

@@ -5,3 +5,4 @@ env_cartola/
 .DS_Store
 *-checkpoint*
 *~lock*
+datasets/*

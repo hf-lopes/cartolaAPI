@@ -51,7 +51,7 @@ from resources.feature_calculator import FeatureCalculator
 #
 pg = PostGreConnectorSQL()
 fc = FeatureCalculator()
-fc.parallel_calculation(19356, 253493, description='Novas_features')
+fc.parallel_calculation(19356, 253493, split_size=1000, description='Novas_features')
 
 # df = pg.execute_query(test.feature_query)
 # print(df)
