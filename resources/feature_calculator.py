@@ -41,6 +41,8 @@ class FeatureCalculator:
 
             df_scout = pd.concat([df_scout, fq.get_basic_info()], axis=1)
 
+            df_scout = pd.concat([df_scout, fq.home_away(scout_id=scout_id)], axis=1)
+
             if df_scout.shape[0] == 0:
                 print('No scout for this ID')
                 continue
@@ -75,7 +77,7 @@ class FeatureCalculator:
 
                 df_scout = pd.concat([df_scout, fq.enemy_points(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
-                df_scout = pd.concat([df_scout, fq.home_away(scout_id=scout_id)], axis=1)
+                ##### Features with errors previously
 
                 df_scout = pd.concat([df_scout, fq.team_points_enemy_points_ratio(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
@@ -88,8 +90,6 @@ class FeatureCalculator:
                 df_scout = pd.concat([df_scout, fq.team_goals_scored_enemy_goals_taken_ratio_home_away(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
                 df_scout = pd.concat([df_scout, fq.team_price_enemy_price_ratio(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
-
-                df_scout = pd.concat([df_scout, fq.team_points_enemy_points_ratio(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
                 df_scout = pd.concat([df_scout, fq.num_std_dev_team_points_enemy_points(scout_id=scout_id, n_rounds=n_rounds)], axis=1)
 
@@ -136,6 +136,7 @@ class FeatureCalculator:
 
 
         self.hash = str(random.getrandbits(128))
+        print("Model hash: %s" % str(self.hash))
         self.description = description
         print('Initializing Threads')
         t_list = []

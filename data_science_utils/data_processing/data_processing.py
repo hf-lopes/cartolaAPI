@@ -42,10 +42,12 @@ class DatasetProcessing():
     def fill_null(self, value, feature_list = []):
         print('\n\nFEATURES FILLED WITH ' + str(value) + '\n')
         for col in feature_list:
-            if value != 'mean':
-                self.df.loc[self.df[col].isnull(), col] = value
-            else:
-                self.df.loc[self.df[col].isnull(), col] = self.df[col].mean()
+            if col not in self.auxiliary:
+                if value != 'mean':
+                    print(col, self.df[col].isnull().sum())
+                    self.df.loc[self.df[col].isnull(), col] = value
+                else:
+                    self.df.loc[self.df[col].isnull(), col] = self.df[col].mean()
 
     def hot_encode(self):
         pos_categories = ['Goleiro', 'Lateral', 'Zagueiro', 'Meia', 'Atacante', 'Tecnico']
