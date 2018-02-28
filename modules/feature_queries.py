@@ -491,19 +491,23 @@ class FeatureQueries:
         df_enemy_home = self.enemy_goals_scored_home(scout_id=scout_id, n_rounds=n_rounds)
         df_team_home = self.team_goals_taken_home(scout_id=scout_id, n_rounds=n_rounds)
         print("Calculating Feature: %s" % feature_name)
+        try:
+            df_team_home = df_team_home.loc[df_enemy_away.index]
 
-        df_team_home = df_team_home.loc[df_enemy_away.index]
+            df_team_home = df_team_home * df_enemy_away
 
-        df_team_home = df_team_home * df_enemy_away
+            df_team_away = df_team_away.loc[df_enemy_home.index]
 
-        df_team_away = df_team_away.loc[df_enemy_home.index]
+            df_team_away = df_team_away * df_enemy_home
 
-        df_team_away = df_team_away * df_enemy_home
+            final_df = pd.concat([df_team_home, df_team_away], axis=0)
 
-        final_df = pd.concat([df_team_home, df_team_away], axis=0)
+            return final_df.rename(feature_name, inplace=True)
 
-        return final_df.rename(feature_name, inplace=True)
+        except:
 
+            print('Failed to calculate home_away performance')
+            return pd.Series(data=None, index=df_team_home.index).rename(feature_name, inplace=True)
     def team_goals_scored_enemy_goals_taken_ratio_home_away(self, scout_id, n_rounds):
         feature_name = "team_goals_scored_enemy_goals_taken_ratio_home_away_last_" + str(n_rounds) + '_rounds'
         df_enemy_away = self.enemy_goals_taken_away(scout_id=scout_id, n_rounds=n_rounds)
@@ -513,17 +517,23 @@ class FeatureQueries:
         df_team_home = self.team_goals_scored_home(scout_id=scout_id, n_rounds=n_rounds)
         print("Calculating Feature: %s" % feature_name)
 
-        df_team_home = df_team_home.loc[df_enemy_away.index]
+        try:
+            df_team_home = df_team_home.loc[df_enemy_away.index]
 
-        df_team_home = df_team_home * df_enemy_away
+            df_team_home = df_team_home * df_enemy_away
 
-        df_team_away = df_team_away.loc[df_enemy_home.index]
+            df_team_away = df_team_away.loc[df_enemy_home.index]
 
-        df_team_away = df_team_away * df_enemy_home
+            df_team_away = df_team_away * df_enemy_home
 
-        final_df = pd.concat([df_team_home, df_team_away], axis=0)
+            final_df = pd.concat([df_team_home, df_team_away], axis=0)
 
-        return final_df.rename(feature_name, inplace=True)
+            return final_df.rename(feature_name, inplace=True)
+
+        except:
+
+            print('Failed to calculate home_away performance')
+            return pd.Series(data=None, index=df_team_home.index).rename(feature_name, inplace=True)
 
 
     def team_price_enemy_price_ratio(self, scout_id, n_rounds):
