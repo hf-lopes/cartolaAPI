@@ -11,6 +11,27 @@ descricao = ['Robadas de Bola', 'Faltas Cometidas', 'Gol Contra', 'Cartao Amarel
              'Impedimento', 'Penalti Perdido']
 pontuacao = [1.7, -0.5, -6.0, -2.0, -5.0, 5.0, 3.00, 7.00, -2.0,
              0.5, -0.3, 5.0, 3.5, 1.0, 0.7, 8.0, -0.5, -3.5]
+
+points_dict = {
+    "RB": 1.7,
+    "FC": -0.5,
+    "GC": -6.0,
+    "CA": -2.0,
+    "CV": -5.0,
+    "SG": 5.0,
+    "DD": 3.0,
+    "DP": 7.0,
+    "GS": -2.0,
+    "FS": 0.5,
+    "PE": -0.3,
+    "A": 5.0,
+    "FT": 3.5,
+    "FD": 1.0,
+    "FF": 0.7,
+    "G": 8.0,
+    "I": -0.5,
+    "PP": -3.5,
+}
 pg_user = 'hlopes'
 pg_pswd = 'lopes_146'
 pg_db = 'cartoladb'
@@ -42,4 +63,4 @@ cartola_endpoint['ligas_usuario'] = 'https://api.cartolafc.globo.com/auth/ligas'
 cartola_endpoint['esquemas'] = 'https://api.cartolafc.globo.com/esquemas'
 cartola_endpoint['time_post'] = 'https://api.cartolafc.globo.com/auth/time/salvar'
 
-NUM_PARALLEL_CONNECTIONS = 25
+NUM_PARALLEL_CONNECTIONS = 10

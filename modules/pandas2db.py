@@ -88,11 +88,11 @@ class Pandas2DB():
             Play_list = []
             for sigla in abreviacao:
                 Play_list.append(int(row[sigla]))
-            if not math.isnan(row['Clube']):
-                scouts = Scout(player_id= int(row['Atleta']), match_week = int(row['Rodada']),
-                          team_id= row['Clube'], has_played= bool(row['Participou']), points= float(row['Pontos']),
-                          average_points= float(row['PontosMedia']), price= float(row['Preco']),
-                          delta_price= float(row['PrecoVariacao']), plays= Play_list,
+            if not math.isnan(int(row['atletas.clube.id.full.name'])):
+                scouts = Scout(player_id= int(row['atletas_atleta_id']), match_week = int(row['Rodada']),
+                          team_id= int(row['atletas.clube.id.full.name']), has_played= bool(row['Participou']), points= float(row['atletas.pontos_num']),
+                          average_points= float(row['atletas.media_num']), price= float(row['atletas.preco_num']),
+                          delta_price= float(row['atletas.variacao_num']), plays= Play_list,
                           year= int(row['Year']))
                 DB_list.append(scouts)
         return DB_list

@@ -1,0 +1,51 @@
+# Features:
+	Criar Features de alto nível que combinem features básicas
+	- Razao entre o numero medio de pontos por rodada do time / pelo numero de pontos por rodada do inimigo
+	- Razao entre o numero medio de pontos por rodada do time em casa/fora / pelo numero de pontos por rodada do inimigo em fora/casa
+	- Razao entre o numero medio de gols feitos por rodada do time / pelo numero de gols tomados por rodada do inimigo
+	- Razao entre o numero medio de gols feitos por rodada do time em casa/fora/ pelo numero de gols tomados por rodada do inimigo em fora/casa
+	- Soma de gols e assistencias do jogador vezes numero de gols feitos pelo time vezes numero de gols tomados pelo oponente
+	- (Lat e Zag) Numero de partidas sem tomar gol dividido pelo (numero de gols tomados pelo time vezes numero de gols feitos pelo oponente)
+	- Soma de media de jogadas positivas / soma da media de jogadas negativas do jogador
+	- Razao entre a media de jogadas positivas / media de jogadas positivas do time
+	- Media de roubadas de bola do jogador vezes numero de passes errados do time oponente
+	- Media de passes errados do jogador vezes numero de roubadas de bola do oponente
+	- Media de faltas recebidas pelo jogador vezes numero de faltas cometidas pelo oponente
+	- Media de faltas feitas pelo jogador vezes numero de faltas recebidas pelo oponente
+	- Razao entre a media de pontos do time / media de pontos do oponente
+	- Soma jogadas de ataque do time vezes numero de gols feitos pelo time vezes numero de gols tomados pelo oponente
+	- Soma jogadas de ataque do inimigo vezes numero de gols feitos pelo oponente vezes numero de gols tomados pelo time
+	- Desvio padrao de pontos do jogador
+	- Mediana de pontos do jogador
+	- Desvio padrao de pontos do time
+	- Desvio padrao do preço
+	- Mediana do preço
+	- Soma de jogadas de ataque do time vezes numero de faltas cometidas e cartoes amarelos do opnente
+	- Soma de jogadas de ataque do inimigo vezes numero de faltas cometidas e cartoes amarelos do time
+	
+# Modelo:
+	Definir visualizaçẽs de features - Finalizado
+	- Grafico pizza para features de classificação - OK
+	- Swarm graph para ver correlação entre features e score - OK
+
+	Implementar Cross Validation para treinamento
+	- Fixar ultimas X rodadas como teste
+	- Definir cross validation de forma que treine em todas as rodadas anteriores e valide em uma só
+
+	Definir métricas de avaliação de resultados - Finalizado
+	- Medir erro médio nos dez melhores jogadores previstos pelo modelo em relação ao real -OK
+	- Medir erro médio dos dez mehlores jogadores reais pelo valor previsto -OK
+	- Medir erro sem os 10% das pontas - OK
+	- Medir performance por posição - OK
+	- Medir pontuação do melhor time do modelo por rodada -Ok
+	- Medir pontuação media do modelo por rodada, escalando o melhor time possivel - Ok
+
+# Sistema Real-Time
+	Implementar connector com o cartola
+	- Definir quais endpoints bater para pegar as infos
+	- Formatar dados para inserir no banco
+
+	Treinamento Real Time
+	- Implementar lambda para rerodar leitura da api do cartola de tempos em tempos
+	- Implementar lambda para ativar treinamento do modelo sempre que algum dado for lido da API
+
