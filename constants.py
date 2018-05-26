@@ -38,6 +38,13 @@ pg_db = 'cartoladb'
 pg_url = 'pg-cartola.c3pssepl8cax.us-east-2.rds.amazonaws.com'
 pg_port = '5432'
 
+status = {
+		"2": "Dúvida",
+		"3": "Suspenso",
+		"5": "Contundido",
+		"6": "Nulo",
+		"7": "Provável"
+	}
 
 ## https://github.com/wgenial/cartrolandofc/blob/master/nova-api.md
 ## Endpoints da API do Cartola
@@ -48,7 +55,7 @@ cartola_endpoint['escalados_destaques'] = 'https://api.cartolafc.globo.com/merca
 cartola_endpoint['patrocinadores'] = 'https://api.cartolafc.globo.com/patrocinadores'
 cartola_endpoint['rodadas'] = 'https://api.cartolafc.globo.com/rodadas'
 cartola_endpoint['partidas'] = 'https://api.cartolafc.globo.com/partidas'
-cartola_endpoint['partidas_rodada'] = 'https://api.cartolafc.globo.com/partidas/[rodada]'
+cartola_endpoint['partidas_rodada'] = 'https://api.cartolafc.globo.com/partidas/%s'
 cartola_endpoint['clubes'] = 'https://api.cartolafc.globo.com/clubes'
 cartola_endpoint['atletas_mercado'] = 'https://api.cartolafc.globo.com/atletas/mercado'
 cartola_endpoint['atletas_pontuados'] = 'https://api.cartolafc.globo.com/atletas/pontuados'

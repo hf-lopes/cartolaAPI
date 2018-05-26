@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import func
 from models.BaseModel import Base
 from models.Players import Player
 from models.Positions import Position
@@ -67,6 +68,43 @@ class PostGreConnector:
             element = self.q.get()
             self.InsertElement(element)
 
+    def QueryTeamAvgs(self, rodada, play, num_of_rounds, year):
+        return self._get_db_session().query(func.avg(Scout.plays[play])\
+                                            .label(play + '_last_' + str(num_of_rounds) + '_rounds'), Team.id)\
+                                        .join(Team)\
+                                        .filter(Scout.match_week < rodada,
+                                                Scout.match_week >= rodada - num_of_rounds,
+                                                Scout.year == year)\
+                                        .group_by(Team.id).all()
+
+    def QueryTeamGoals(self, rodada, num_of_rounds, year):
+        return self._get_db_session().query(Team.id, func.avg(Match.home_score)
+                                            .label('avg_home_score_last_' + str(num_of_rounds) + '_rounds'))\
+            .join(Match, Match.home_team_id == Team.id)\
+            .filter(Match.match_week < rodada,
+                    Match.match_week >= rodada - num_of_rounds,
+                    Match.year == year)
+
+    def QueryTeamPlayer(self, q):
+        return self._get_db_session().\
+            query(q.c.Player_id, Team.id).\
+            join(Team, Team.id == q.c.team_id).\
+            first().\
+            subquery()
+
+    def QueryPlayerScout(self, scout_id):
+        return self._get_db_session().\
+            query(Scout.id, Player.player_id, Player.year, Player.team_id).\
+            join(Player).\
+            filter(Scout.id == scout_id).\
+            subquery()
+
+    def QueryTeamScout(self, scout_id):
+        q = self._get_db_session().query(Scout.id).join(Player).filter(Scout.id == scout_id,
+                                                                    Scout.player_id == Player.player_id,
+                                                                    Scout.year == Player.year)
+    def QuerySql(self, object, query_str):
+        return self._get_db_session().query(object).filter(query_str).all()
 
     def InsertElement(self, element):
         try:
@@ -79,6 +117,22 @@ class PostGreConnector:
             session.rollback()
             print(ex)
 
+    def _get_db_session(self):
+        DBsession = sessionmaker()
+        DBsession.bind = self.engine
+        return DBsession()
+
+    # def InsertOrUpdate(self, object, element, compare_fn):
+    #     try:
+    #         DBsession = sessionmaker()
+    #         DBsession.bind = self.engine
+    #         session = DBsession()
+    #         q = session.query(object).filter(compare_fn(object, element))
+    #         session.merge(element)
+    #         session.commit()
+    #     except Exception as ex:
+    #         session.rollback()
+    #         print(ex)
     def QueryScout(self, scout_id):
         scout = self.session.query(Scout).filter(Scout.id == scout_id).one()
         return scout

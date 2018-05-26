@@ -3,39 +3,54 @@ import matplotlib.pyplot as plt
 from xgboost import plot_importance
 import pandas as pd
 
+import math
 
-class ResultsVisualization:
-    def __init__(self, y_test, test_score, y_train, train_score, model):
-        self.y_test = y_test
-        self.test_score = test_score
-        self.y_train = y_train
-        self.train_score = train_score
-        self.model = model
+import numpy as np
+from sklearn.metrics import mean_squared_error, \
+    explained_variance_score, mean_absolute_error, median_absolute_error, \
+    r2_score
+from toolz.curried import *
 
-    def feature_importance(self):
-        plot_importance(self.model)
-        fig = plt.gcf()
-        fig.set_size_inches(20, 20)
-        plt.show()
 
-    def train_test_curves(self):
-        results = self.model.evals_result()
-        epochs = len(results['validation_0']['auc'])
-        x_axis = range(0, epochs)
-        fig, ax = plt.subplots()
-        ax.plot(x_axis, results['validation_0']['auc'], label='Train')
-        ax.plot(x_axis, results['validation_1']['auc'], label='Test')
-        ax.legend()
-        plt.ylabel('AUC')
-        plt.title('XGBoost AUC')
-        plt.show()
+def feature_importance(model):
+    plot_importance(model)
+    fig = plt.gcf()
+    fig.set_size_inches(20, 20)
+    plt.show()
 
-    def score_hist(self):
-        plt.hist(self.y_train, bins=30, color='g', normed=True, label='Desired', alpha=0.5)
-        plt.hist(self.train_score, bins=30, color='r', normed=True, label='Predicted', alpha=0.5)
-        plt.title('Train score histogram')
-        plt.show()
-        plt.hist(self.y_test, bins=30, color='g', normed=True, label='Desired', alpha=0.5)
-        plt.hist(self.test_score, bins=30, color='r', normed=True, label='Predicted', alpha=0.5)
-        plt.title('Test score histogram')
-        plt.show()
+def get_top_players(eval_df, target, prediction_col, real=True,
+                    position='all', num_of_players=100):
+    if real:
+        eval_df.sort_values(target, ascending=False)
+    else:
+        eval_df.sort_values(prediction_col, ascending=False)
+
+    if position != 'all':
+        pos_df = eval_df.loc[eval_df.Posicao == position]
+        sampled_df = pos_df.head(num_of_players)
+    else:
+        sampled_df = eval_df.head(num_of_players)
+
+    return sampled_df
+
+
+def get_best_team(eval_df, target, prediction_col, rodada, ano, real=True,
+                  team_formation=(2, 2, 3, 3)):
+    df = eval_df.loc[(eval_df.ano == ano) & (eval_df.Rodada == rodada)]
+    return pd.concat(list(map(
+        get_top_players(df, target, prediction_col, real=real, position=_,
+                        num_of_players=_), team_formation,
+        (2, 3, 4, 5))))
+
+def get_performance_without_outliers(eval_df, target, prediction_col,
+                                     outlier_prct=0.1, real=True):
+    if real:
+        eval_df.sort_values(target, ascending=False)
+    else:
+        eval_df.sort_values(prediction_col, ascending=False)
+
+    df = eval_df.iloc[
+         round(outlier_prct * eval_df.shape[0]):round(
+             (1 - outlier_prct) * eval_df.shape[0])]
+
+    return df.head(50)
