@@ -21,7 +21,7 @@ from multiprocessing import Queue
 class PostGreConnector:
 
     def __init__(self):
-        self.engine = create_engine('postgresql://hlopes:lopes_146@pg-cartola.c3pssepl8cax.us-east-2.rds.amazonaws.com:5432/cartoladb', pool_size = 40)
+        self.engine = create_engine('postgresql://******:*****@pg-cartola.c3pssepl8cax.us-east-2.rds.amazonaws.com:5432/cartoladb', pool_size = 40)
         DBsession = sessionmaker()
         DBsession.bind = self.engine
         self.session = DBsession()

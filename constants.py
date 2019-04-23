@@ -33,9 +33,9 @@ points_dict = {
     "PP": -3.5,
 }
 pg_user = 'hlopes'
-pg_pswd = 'lopes_146'
+pg_pswd = '*****'
 pg_db = 'cartoladb'
-pg_url = 'pg-cartola.c3pssepl8cax.us-east-2.rds.amazonaws.com'
+pg_url = '*****'
 pg_port = '5432'
 
 status = {
